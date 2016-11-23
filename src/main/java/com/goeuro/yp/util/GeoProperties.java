@@ -18,25 +18,16 @@ import org.slf4j.LoggerFactory;
  */
 public class GeoProperties {
 
+	private static final String config = "config.properties";
 	private static final Logger log = LoggerFactory.getLogger(GeoProperties.class);
 	private static Properties prop;
 
 	private static void init() {
 		prop = new Properties();
-		InputStream input = null;
-		try {
-			input = GeoProperties.class.getClassLoader().getResourceAsStream("config.properties");
+		try (InputStream input = GeoProperties.class.getClassLoader().getResourceAsStream(config)) {
 			prop.load(input);
-		} catch (IOException e) {
-			log.error("Exception: ", e);
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					log.error("Exception: ", e);
-				}
-			}
+		} catch (IOException ex) {
+			log.error("Exception: ", ex);
 		}
 	}
 
